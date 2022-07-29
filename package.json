@@ -1,7 +1,7 @@
 {
   "name": "nodejs-cache-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.js",
   "license": "MIT",
   "private": true,
   "scripts": {
