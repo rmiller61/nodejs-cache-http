@@ -1,5 +1,11 @@
 // From: https://gist.github.com/paulsturgess/ebfae1d1ac1779f18487d3dee80d1258
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import {
+  AxiosServiceRequestConfig,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "../types"
 
 export default class AxiosService {
   constructor(args: AxiosRequestConfig = {}) {
@@ -9,7 +15,10 @@ export default class AxiosService {
 
   service: AxiosInstance
 
-  request(args: AxiosRequestConfig = {}, callback: (response?: AxiosResponse) => void = () => {}) {
+  request(
+    args: AxiosServiceRequestConfig = {},
+    callback: (response?: AxiosResponse) => void = () => {}
+  ) {
     return this.service.request(args).then((response) => callback(response))
   }
 }
