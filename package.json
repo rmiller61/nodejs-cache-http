@@ -1,11 +1,11 @@
 {
   "name": "nodejs-cache-api",
   "version": "1.0.0",
-  "main": "src/app.ts",
+  "main": "index.js",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "nodemon index.js",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "redis": "redis-server"
   },
