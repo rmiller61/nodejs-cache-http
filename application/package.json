@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "nodemon dist/app.js",
+    "start": "node dist/app.js",
     "redis": "redis-server",
     "build": "tsc"
   },
