@@ -1,11 +1,10 @@
 import express from "express"
 import responseTime from "response-time"
-import redis from "redis"
-//import Service from "./axios"
 import bodyParser from "body-parser"
-//import axios from "axios"
-//import { defaults } from "./constants"
-//import { encode, decode } from "./utils"
+import axios from "axios"
+import { defaults, now } from "./constants"
+import { encode, decode, addTime } from "./utils"
+const redis = require("redis")
 
 // Src: https://betterprogramming.pub/how-to-cache-api-requests-with-redis-and-node-js-cba883385e7
 
@@ -20,75 +19,53 @@ const runApp = async () => {
   const app = express()
   app.use(responseTime())
 
-  app.post("/", jsonParser, async (req: any, res: any) => {
-    /**const {body, query} = req
-    const {url, data} = body
+  app.post("/", jsonParser, async (req, res) => {
+    const { expires: reqExpires, ...config } = req.body
+    const expiresAt = addTime(reqExpires || defaults.expires)
 
-    const expires = query.expires || defaults.expires**/
-    console.log(req)
-  })
+    try {
+      // The key for the database entry
+      const key = encode(config)
 
-  app.get(
-    "/cache",
-    async (
-      req: { query: { url: any } },
-      res: {
-        status: (arg0: number) => {
-          (): any
-          new (): any
-          json: { (arg0: string | null): any; new (): any }
+      // Check the database for the key
+      const cachedResponse = await client.get(key)
+
+      const update = async () => {
+        const { data } = await axios.request(config)
+        // If the key does not exist, set the key to the value and return the value
+        const value = {
+          response: data,
+          expiresAt,
         }
-      }
-    ) => {
-      const key = req.query.url
-
-      try {
-        const cachedResponse = await client.get(key)
-        //console.log('cachedResponse', cachedResponse)
-        return res.status(200).json(cachedResponse)
-        //return res.status(200).json(decodeURI(key))
-      } catch (err: any) {
-        console.log(err)
-        throw new Error(err)
-      }
-    }
-  )
-
-  app.post(
-    "/save",
-    jsonParser,
-    async (
-      req: { body: { url: any; data: any; expires: number } },
-      res: {
-        status: (arg0: number) => {
-          (): any
-          new (): any
-          json: { (arg0: { data: any; expires: any }): any; new (): any }
-        }
-      }
-    ) => {
-      const date = new Date()
-      const time = date.getTime()
-      const msDefault = 1000 * 60 * 60 * 24 * 7 // 7 days by default
-      const expiresDefault = new Date(time + msDefault)
-      const key = req.body.url
-      const data = req.body.data
-      const expires = req.body.expires ?? expiresDefault.getTime() // 7 days by default
-      const value = {
-        data,
-        expires,
-      }
-
-      try {
         await client.set(key, JSON.stringify(value))
-        return res.status(200).json(value)
-        //return res.status(200).json(decodeURI(key))
-      } catch (err: any) {
-        console.log(err)
-        throw new Error(err)
+        return data
       }
+
+      if (cachedResponse) {
+        // If the key exists
+        const { response, expiresAt } = decode(cachedResponse)
+
+        if (expiresAt > now) {
+          //console.log(expiresAt, now)
+          // If the cached response is still valid
+          return res.status(200).header("x-api-cache-status", "CACHED").json(response)
+        } else {
+          // If the cached response is expired
+          const updatedResponse = await update()
+          return res
+            .status(200)
+            .header("x-api-cache-status", "EXPIRED-UPDATED")
+            .json(updatedResponse)
+        }
+      } else {
+        // If the key does not exist
+        const updatedResponse = await update()
+        return res.status(200).header("x-api-cache-status", "FRESH").json(updatedResponse)
+      }
+    } catch (err: any) {
+      throw new Error(err)
     }
-  )
+  })
 
   app.listen(process.env.PORT || 3005, () => {
     console.log("Node server started")

@@ -16,7 +16,7 @@
     "noFallthroughCasesInSwitch": true,
     "outDir": "dist",
     "lib": ["es2018", "dom"],
-    "importHelpers": true
+    "importHelpers": false
   },
   "exclude": ["node_modules", "dist"],
   "include": ["**/*.ts", "**/*.tsx"]

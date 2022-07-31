@@ -2,8 +2,9 @@
   "name": "application",
   "version": "1.0.0",
   "private": true,
+  "main": "dist/app.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon dist/app.js",
     "redis": "redis-server",
     "build": "tsc"
   },
