@@ -67,7 +67,7 @@ const runApp = async () => {
     }
   })
 
-  app.listen(process.env.PORT || 3005, () => {
+  app.listen(process.env.PORT || 8080, () => {
     console.log("Node server started")
   })
 }
