@@ -63,6 +63,7 @@ const runApp = async () => {
         return res.status(200).header("x-api-cache-status", "FRESH").json(updatedResponse)
       }
     } catch (err: any) {
+      console.log(err)
       throw new Error(err)
     }
   })
