@@ -4,6 +4,8 @@ import bodyParser from "body-parser"
 import axios from "axios"
 import { defaults, now } from "./constants"
 import { encode, decode, addTime } from "./utils"
+//import AxiosService from "@nodejs-cache-http/api"
+
 const redis = require("redis")
 
 // Src: https://betterprogramming.pub/how-to-cache-api-requests-with-redis-and-node-js-cba883385e7
