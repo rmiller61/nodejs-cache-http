@@ -2,7 +2,7 @@
   "name": "@nodejs-cache-http/api",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/index.js",
+  "main": "dist/index",
   "scripts": {
     "build": "tsc",
     "postinstall": "yarn build"
