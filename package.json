@@ -11,9 +11,9 @@
     "dev": "nodemon dist/application/app.js",
     "start": "tsc && node dist/application/app.js",
     "redis": "redis-server",
-    "build": "tsc",
+    "build": "tsc && yarn --cwd api build",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
-    "postinstall": "cd api && yarn"
+    "postinstall": "yarn build"
   },
   "prettier": {
     "semi": false,
