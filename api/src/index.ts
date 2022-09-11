@@ -1,6 +1,6 @@
 // From: https://gist.github.com/paulsturgess/ebfae1d1ac1779f18487d3dee80d1258
 import axios, { AxiosInstance, AxiosResponse } from "axios"
-import { AxiosRequestConfigWithUrl, AxiosServiceRequestParams } from "./types"
+import { AxiosServiceReturnRequestConfig, AxiosServiceRequestParams } from "./types"
 
 class AxiosService {
   constructor() {
@@ -16,15 +16,16 @@ class AxiosService {
     expires,
     callback,
   }: AxiosServiceRequestParams): Promise<AxiosResponse> {
+    const data: AxiosServiceReturnRequestConfig = {
+      ...config,
+      expires,
+    }
     return (
       this.service
         .request({
           url: endpoint,
           method: "POST",
-          data: {
-            ...config,
-            expires,
-          },
+          data,
         })
         .then((response) => {
           if (callback) {
