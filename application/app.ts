@@ -1,10 +1,9 @@
 import express from "express"
 import responseTime from "response-time"
 import bodyParser from "body-parser"
-import axios from "axios"
 import { defaults, now } from "./constants"
 import { encode, decode, addTime } from "./utils"
-//import AxiosService from "@nodejs-cache-http/api"
+import AxiosService, { AxiosServiceReturnRequestConfig } from "@nodejs-cache-http/api"
 
 const redis = require("redis")
 
@@ -24,7 +23,7 @@ const runApp = async () => {
   app.use(responseTime())
 
   app.post("/", jsonParser, async (req, res) => {
-    const { expires: reqExpires, ...config } = req.body
+    const { expires: reqExpires, ...config } = req.body as AxiosServiceReturnRequestConfig
     const expiresAt = addTime(reqExpires || defaults.expires)
 
     try {
@@ -35,7 +34,7 @@ const runApp = async () => {
       const cachedResponse = await client.get(key)
 
       const update = async () => {
-        const { data } = await axios.request(config)
+        const { data } = await AxiosService.service.request(config)
         // If the key does not exist, set the key to the value and return the value
         const value = {
           response: data,

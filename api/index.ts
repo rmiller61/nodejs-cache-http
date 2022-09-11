@@ -2,6 +2,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios"
 import { AxiosServiceReturnRequestConfig, AxiosServiceRequestParams } from "./types"
 
+export * from "./types"
+
 class AxiosService {
   constructor() {
     const service = axios.create()
