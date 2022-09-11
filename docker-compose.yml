@@ -3,6 +3,7 @@ version: "3"
 services:
   redis:
     image: "redis"
+    container_name: db
     expose:
       - 6379
     volumes:
@@ -12,10 +13,8 @@ services:
     build: .
     ports:
       - 8080:8080
+    container_name: client
     links:
       - redis
-    environment:
-      - PORT=8080
-
 volumes:
   nodejs-cache-http:
