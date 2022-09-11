@@ -1,5 +1,6 @@
 // From: https://gist.github.com/paulsturgess/ebfae1d1ac1779f18487d3dee80d1258
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
+import axios, { AxiosInstance, AxiosResponse } from "axios"
+import { AxiosRequestConfigWithUrl } from "./types"
 
 class AxiosService {
   constructor() {
@@ -11,7 +12,7 @@ class AxiosService {
 
   request(
     endpoint: string,
-    config: AxiosRequestConfig = {},
+    config: AxiosRequestConfigWithUrl,
     expires?: number,
     callback?: (response: AxiosResponse) => void
   ): Promise<AxiosResponse> {
