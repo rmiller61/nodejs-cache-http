@@ -3,23 +3,24 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
-  "main": "application/dist/app.js",
+  "main": "dist/application/app.js",
   "workspaces": [
     "api"
   ],
   "scripts": {
-    "dev": "nodemon dist/application/src/app.js",
-    "start": "tsc && node dist/application/src/app.js",
+    "dev": "nodemon dist/application/app.js",
+    "start": "tsc && node dist/application/app.js",
     "redis": "redis-server",
     "build": "tsc",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx ."
+    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+    "postinstall": "cd api && yarn"
   },
   "prettier": {
     "semi": false,
     "printWidth": 100
   },
   "dependencies": {
-    "axios": "^0.27.2",
+    "@nodejs-cache-http/api": "1.0.0",
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
     "redis": "^4.2.0"
