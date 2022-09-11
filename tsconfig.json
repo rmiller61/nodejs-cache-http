@@ -19,6 +19,7 @@
     "importHelpers": true,
     "composite": true
   },
+  "references": [{ "path": "api" }],
   "exclude": ["node_modules", "dist", "api"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

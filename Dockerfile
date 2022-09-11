@@ -4,9 +4,11 @@ WORKDIR /var/www/app
 
 COPY package*.json ./
 
-RUN yarn install
+COPY yarn.lock ./
 
 COPY . .
+
+RUN yarn
 
 ENV PORT=8080
 
