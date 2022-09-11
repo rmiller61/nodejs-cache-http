@@ -7,10 +7,12 @@ import { encode, decode, addTime } from "./utils"
 const redis = require("redis")
 
 // Src: https://betterprogramming.pub/how-to-cache-api-requests-with-redis-and-node-js-cba883385e7
+const client = redis.createClient({
+  url: `${process.env.REDIS_URL}`,
+})
 
 const runApp = async () => {
   // connect to redis
-  const client = redis.createClient()
   client.on("error", (err) => console.log("Redis Client Error", err))
   await client.connect()
   console.log("Redis connected!")
